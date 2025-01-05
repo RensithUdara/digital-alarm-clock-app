@@ -44,8 +44,10 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
                       alignment: Alignment.center,
                       width: 200,
                       height: 65,
-                      decoration:
-                          BoxDecoration(color: const Color(0xff36402b), borderRadius: BorderRadius.circular(10)),
+                      decoration: BoxDecoration(
+                        color: const Color(0xff36402b),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                   Padding(
@@ -157,6 +159,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
           style: TextStyle(
             color: Colors.green[200],
             fontSize: 18,
+            fontWeight: FontWeight.w300,
           ),
         )
       ],
@@ -182,7 +185,11 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
             return Center(
               child: Text(
                 items[index].toString().padLeft(2, '0'),
-                style: const TextStyle(fontSize: 60, color: Color(0xffa8c889), fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  fontSize: 60,
+                  color: Color(0xffa8c889),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             );
           },
