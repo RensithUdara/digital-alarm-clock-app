@@ -41,14 +41,16 @@ class _HomePageState extends State<HomePage> {
         width: double.infinity,
         height: MediaQuery.sizeOf(context).height * 0.6,
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.black,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(55),
-            topRight: Radius.circular(55),
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
+          borderRadius: BorderRadius.circular(40),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,13 +64,15 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 150,
                     color: Color(0xffa8c889),
                     height: 0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   "THE NEXT ALARM CLOCK IN 19 MIN",
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     color: Color(0xff69745F),
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
               ],
@@ -87,20 +91,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDayRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
-          .map((day) => Text(
-                day,
-                style: TextStyle(
-                  fontSize: 22,
-                  color: DateTime.now().weekday ==
-                          ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].indexOf(day) + 1
-                      ? Colors.black
-                      : const Color(0xff59644c),
-                ),
-              ))
-          .toList(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+            .map((day) => Text(
+                  day,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: DateTime.now().weekday ==
+                            ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].indexOf(day) + 1
+                        ? Colors.black
+                        : const Color(0xff59644c),
+                  ),
+                ))
+            .toList(),
+      ),
     );
   }
 
@@ -119,10 +127,15 @@ class _HomePageState extends State<HomePage> {
                 strokeWidth: 2,
                 dashPattern: const [5, 5],
                 borderType: BorderType.RRect,
+                radius: const Radius.circular(20),
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(12),
                   width: 350,
                   height: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -131,10 +144,15 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             _alarms[index],
-                            style: const TextStyle(fontSize: 60),
+                            style: const TextStyle(
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                           IconButton(
                             icon: const Icon(Icons.play_arrow, size: 70),
+                            color: Colors.black,
                             onPressed: () {
                               // Add functionality to play/pause alarm
                             },
@@ -143,7 +161,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const Text(
                         "VATINOFE KIND OF BLUE",
-                        style: TextStyle(fontSize: 24, color: Color(0xff69745f)),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xff69745f),
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ],
                   ),
@@ -157,59 +179,73 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildFooterButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        IconButton(
-          onPressed: () {
-            // Add calendar functionality
-          },
-          icon: const Icon(
-            Icons.calendar_month,
-            color: Color(0xffa8c889),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
           ),
-          style: IconButton.styleFrom(
-            backgroundColor: Colors.black,
-            fixedSize: const Size(60, 60),
-          ),
-        ),
-        SizedBox(
-          width: 250,
-          child: FloatingActionButton.extended(
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
             onPressed: () {
-              // Add functionality to show current time
+              // Add calendar functionality
             },
-            label: Text(
-              _currentTime,
-              style: const TextStyle(fontSize: 24),
+            icon: const Icon(
+              Icons.calendar_month,
+              color: Color(0xffa8c889),
             ),
-            shape: const StadiumBorder(),
-            backgroundColor: Colors.black,
-            foregroundColor: const Color(0xffa8c889),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.black,
+              fixedSize: const Size(60, 60),
+            ),
           ),
-        ),
-        IconButton(
-          onPressed: () async {
-            final selectedTime = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CustomTimePicker(),
+          SizedBox(
+            width: 250,
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                // Add functionality to show current time
+              },
+              label: Text(
+                _currentTime,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-            );
-            if (selectedTime != null) {
-              _addAlarm(selectedTime);
-            }
-          },
-          icon: const Icon(
-            Icons.add,
-            color: Color(0xffa8c889),
+              shape: const StadiumBorder(),
+              backgroundColor: Colors.black,
+              foregroundColor: const Color(0xffa8c889),
+            ),
           ),
-          style: IconButton.styleFrom(
-            backgroundColor: Colors.black,
-            fixedSize: const Size(60, 60),
+          IconButton(
+            onPressed: () async {
+              final selectedTime = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CustomTimePicker(),
+                ),
+              );
+              if (selectedTime != null) {
+                _addAlarm(selectedTime);
+              }
+            },
+            icon: const Icon(
+              Icons.add,
+              color: Color(0xffa8c889),
+            ),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.black,
+              fixedSize: const Size(60, 60),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
