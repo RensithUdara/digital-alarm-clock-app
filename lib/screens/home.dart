@@ -10,6 +10,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String _currentTime = "09:42";
+  List<String> _alarms = ["09:42", "10:00", "12:30"]; // Example alarms
+
+  void _addAlarm(String time) {
+    setState(() {
+      _alarms.add(time);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,14 +105,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildAlarmList() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: List.generate(
-            3,
-            (index) => Padding(
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: _alarms.length,
+          itemBuilder: (context, index) {
+            return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: DottedBorder(
                 color: Colors.grey,
@@ -114,20 +123,25 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(8),
                   width: 350,
                   height: 150,
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            "09:42",
-                            style: TextStyle(fontSize: 60),
+                            _alarms[index],
+                            style: const TextStyle(fontSize: 60),
                           ),
-                          Icon(Icons.play_arrow, size: 70)
+                          IconButton(
+                            icon: const Icon(Icons.play_arrow, size: 70),
+                            onPressed: () {
+                              // Add functionality to play/pause alarm
+                            },
+                          ),
                         ],
                       ),
-                      Text(
+                      const Text(
                         "VATINOFE KIND OF BLUE",
                         style: TextStyle(fontSize: 24, color: Color(0xff69745f)),
                       ),
@@ -135,8 +149,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
@@ -147,7 +161,9 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            // Add calendar functionality
+          },
           icon: const Icon(
             Icons.calendar_month,
             color: Color(0xffa8c889),
@@ -160,10 +176,12 @@ class _HomePageState extends State<HomePage> {
         SizedBox(
           width: 250,
           child: FloatingActionButton.extended(
-            onPressed: () {},
-            label: const Text(
-              '09:42',
-              style: TextStyle(fontSize: 24),
+            onPressed: () {
+              // Add functionality to show current time
+            },
+            label: Text(
+              _currentTime,
+              style: const TextStyle(fontSize: 24),
             ),
             shape: const StadiumBorder(),
             backgroundColor: Colors.black,
@@ -171,8 +189,16 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         IconButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const CustomTimePicker()));
+          onPressed: () async {
+            final selectedTime = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CustomTimePicker(),
+              ),
+            );
+            if (selectedTime != null) {
+              _addAlarm(selectedTime);
+            }
           },
           icon: const Icon(
             Icons.add,
