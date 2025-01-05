@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTimePicker extends StatefulWidget {
-  final void Function(int hour, int minute)? onTimeSelected;
-
-  const CustomTimePicker({super.key, this.onTimeSelected});
+  const CustomTimePicker({super.key});
 
   @override
   State<CustomTimePicker> createState() => _CustomTimePickerState();
@@ -62,7 +60,6 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
                             setState(() {
                               selectedHour = value;
                             });
-                            widget.onTimeSelected?.call(selectedHour, selectedMinute);
                           },
                         ),
                         const Padding(
@@ -79,7 +76,6 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
                             setState(() {
                               selectedMinute = value;
                             });
-                            widget.onTimeSelected?.call(selectedHour, selectedMinute);
                           },
                         )
                       ],
@@ -122,7 +118,11 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final selectedTime =
+                        "${selectedHour.toString().padLeft(2, '0')}:${selectedMinute.toString().padLeft(2, '0')}";
+                    Navigator.pop(context, selectedTime);
+                  },
                   icon: const Icon(
                     Icons.check,
                     color: Colors.black,
